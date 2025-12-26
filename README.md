@@ -1,29 +1,43 @@
 # Quantum-Accelerated HPC Engine
 
-This project focuses on developing a high-performance computing (HPC) core that integrates low-level hardware optimizations (SIMD) with quantum-inspired algorithms to accelerate neural network training and inference.
+A high-performance computing (HPC) core designed to bridge the gap between low-level hardware optimizations (SIMD) and quantum-inspired algorithms. This project serves as the primary implementation for my research on Variational Quantum Algorithms (VQAs).
+
+---
+
+## 📄 Research & Publications
+
+This framework is the foundation for the following research paper:
+* **Title:** A Transparent CPU-Based Framework for Studying Optimization Dynamics in Variational Quantum Algorithms
+* **Author:** Huy Ngo
+* **Read the Full Paper:** [Quantum_Accelerated_HPC_Engine_Paper.pdf](./Quantum_Accelerated_HPC_Engine_Paper.pdf)
 
 ---
 
 ## Technical Pillars
 
 ### 1. Multi-Architecture SIMD Abstraction Layer
-The system provides a unified abstraction for vector instructions, allowing a single codebase to achieve optimal performance across diverse hardware platforms:
-* **X86_64 Support:** Deep optimization via SSE, AVX2, and AVX-512 instruction sets for parallel floating-point operations.
-* **AArch64 Support:** Leverages NEON Intrinsics to maximize throughput on modern ARM-based silicon (Apple Silicon, AWS Graviton).
-* **Fast Approximation Kernels:** Custom implementations of transcendental functions (exp, log) using Union bit-manipulation, reducing latency compared to standard libraries while maintaining required precision.
+The engine provides a unified abstraction for vector instructions, enabling high-throughput execution across diverse CPU architectures:
+* **X86_64 Support:** Deep optimization via SSE4.2, AVX2, and AVX-512 for wide-vector floating-point arithmetic.
+* **AArch64 Support:** Native NEON Intrinsics to maximize performance on ARM-based silicon.
+* **Fast Transcendental Math:** Custom Union-based bit manipulation for exponential and logarithmic approximations, bypassing high-latency standard library calls.
 
+### 2. Quantum-Inspired Optimization Engine
+A custom optimizer designed to navigate non-convex landscapes by leveraging quantum mechanics principles:
+* **Analytic Gradient Evaluation:** Full implementation of the **Parameter-Shift Rule** for exact gradient calculation, avoiding numerical noise from finite-difference methods.
+* **Grover Search Integration:** Utilizes Amplitude Amplification to identify optimal weight updates with higher probability than classical stochastic descent.
+* **Quantum Fourier Transform (QFT):** Applied for spectral analysis of parameter distributions to mitigate vanishing gradients (Barren Plateaus).
 
+### 3. Systems-Level Memory Management
+* **Memory Arena Allocator:** Implements a centralized arena to minimize heap fragmentation and eliminate allocation overhead during critical execution paths.
+* **Cache-Line Alignment:** Strict 64-byte alignment enforcement to maximize data throughput between RAM and CPU registers.
 
-### 2. Quantum-Inspired Optimization
-The computing core integrates algorithms derived from quantum computing to solve convex and non-convex optimization problems:
-* **Grover Search Implementation:** Utilizes Amplitude Amplification within the gradient search process, enabling the optimizer to identify optimal weight updates with higher probability than classical stochastic methods.
-* **Quantum Fourier Transform (QFT):** Applies QFT to analyze parameter distribution characteristics in vector space, supporting stable model convergence and mitigating vanishing gradients.
+---
 
+## Framework Architecture
 
-
-### 3. High-Performance Systems Programming
-* **Memory Arena Allocator:** Employs a centralized memory arena to manage RAM usage, minimizing OS overhead and preventing memory fragmentation.
-* **Cache Alignment:** Strictly enforces 64-byte data alignment (Cache-line alignment) to optimize data loading from RAM into CPU registers.
+* **Quantum Core:** Exact state-vector simulation, parameterized quantum gates, and Born-rule measurements.
+* **Execution Engine:** Multi-threaded orchestration via OpenMP with NUMA-aware data locality.
+* **Diagnostic Suite:** Real-time monitoring of state evolution, gradient magnitudes, and training convergence.
 
 ---
 
@@ -31,7 +45,7 @@ The computing core integrates algorithms derived from quantum computing to solve
 
 ### Requirements
 * C++17 compliant compiler (GCC 9+, Clang 10+).
-* OpenMP Runtime for multi-threaded orchestration.
+* OpenMP Runtime.
 
 ### Build Instructions
 ```bash
