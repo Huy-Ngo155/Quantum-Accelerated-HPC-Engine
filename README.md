@@ -38,7 +38,13 @@ A custom optimizer designed to navigate non-convex landscapes by leveraging quan
 * **Quantum Core:** Exact state-vector simulation, parameterized quantum gates, and Born-rule measurements.
 * **Execution Engine:** Multi-threaded orchestration via OpenMP with NUMA-aware data locality.
 * **Diagnostic Suite:** Real-time monitoring of state evolution, gradient magnitudes, and training convergence.
+  
+## Implementation Highlights (Technical Documentation)
 
+To ensure maximum performance and clarity, the following architectural choices were made:
+- **Manual Vectorization:** Located in `engine-3.cpp`, we use AVX2/NEON intrinsics to perform 8-wide floating-point operations for state-vector updates.
+- **Custom Memory Arena:** To avoid OS-level overhead, memory is pre-allocated in a contiguous block, ensuring cache-line alignment (64-byte).
+- **Analytic Gradients:** Instead of finite difference, we implement the Parameter-shift rule for $O(1)$ numerical stability.
 ---
 
 ## Installation and Building
